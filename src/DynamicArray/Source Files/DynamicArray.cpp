@@ -236,15 +236,23 @@ void DynamicArray::RemoveByIndex(int index)
 /// <param name="value">Значение для удаления</param>
 void DynamicArray::RemoveByValue(double value)
 {
+	int count = 0;
 	for (int i = 0; i < _size; i++)
 	{
 		if (_array[i] == value)
 		{
 			RemoveByIndex(i);
-			return;
+			count++;
 		}
 	}
-	cout << "Error: Value not found in array" << endl;
+	if (count != 0)
+	{
+		cout << "Info: " << count << " elements removed successfully";
+	}
+	else
+	{
+		cout << "Error: Value not found in array" << endl;
+	}
 }
 
 /// <summary>
@@ -297,14 +305,19 @@ void DynamicArray::InsertAfterValue(double afterValue, double newValue)
 /// </returns>
 int DynamicArray::LinearSearch(double value)
 {
+	int count = 0;
 	for (int i = 0; i < _size; i++)
 	{
 		if (_array[i] == value)
 		{
-			return i;
+			count++;
+			cout << "Value found at index: " << ++i << endl;
 		}
 	}
-	return -1;
+	if (count == 0)
+	{
+		return -1;
+	}
 }
 
 /// <summary>
@@ -316,10 +329,11 @@ int DynamicArray::LinearSearch(double value)
 /// Индекс найденного элемента
 /// -1 - если элемент не найден или массив не отсортирован
 /// </returns>
-int DynamicArray::BinarySearch(double value)
+void DynamicArray::BinarySearch(double value)
 {
 	int left = 0;
 	int right = _size - 1;
+	bool found = false;
 
 	while (left <= right)
 	{
@@ -327,7 +341,9 @@ int DynamicArray::BinarySearch(double value)
 
 		if (_array[middleIndex] == value)
 		{
-			return middleIndex;
+			cout << "Value found at index: " << ++middleIndex << endl;
+			found = true;
+			break;
 		}
 		else if (_array[middleIndex] < value)
 		{
@@ -338,7 +354,11 @@ int DynamicArray::BinarySearch(double value)
 			right = middleIndex - 1;
 		}
 	}
-	return -1;
+	if (!found)
+	{
+		cout << "Value not found in array." << endl;
+	}
+
 }
 
 /// <summary>
@@ -353,8 +373,7 @@ void DynamicArray::SortArray()
 		for (int currentIndex = interval; currentIndex < _size; currentIndex++)
 		{
 			int compareIndex = currentIndex;
-			while ((compareIndex >= interval) &&
-				(_array[compareIndex - interval] > _array[compareIndex]))
+			while ((compareIndex >= interval) && (_array[compareIndex - interval] > _array[compareIndex]))
 			{
 				double temp = _array[compareIndex];
 				_array[compareIndex] = _array[compareIndex - interval];

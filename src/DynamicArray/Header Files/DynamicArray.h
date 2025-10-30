@@ -116,7 +116,7 @@ public:
     /// <summary>
     /// Выполняет бинарный поиск элемента в отсортированном массиве.
     /// </summary>
-    int BinarySearch(double value);
+    void BinarySearch(double value);
 
     /// <summary>
     /// Сортирует массив методом Шелла.

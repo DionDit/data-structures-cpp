@@ -42,6 +42,19 @@ int GetIntegerInput(string prompt)
     }
     return value;
 }
+double GetDoubleInput(string prompt)
+{
+    double value;
+    cout << prompt;
+    cin >> value;
+
+    if (cin.fail()) {
+        cin.clear();
+        cout << "Error: Invalid input. Please enter a number." << endl;
+        return -1;
+    }
+    return value;
+}
 
 /// <summary>
 /// Отображает главное меню программы
@@ -81,7 +94,7 @@ void RemoveByIndexMenu(DynamicArray& array)
 
     if (index != -1) 
     {
-        array.RemoveByIndex(index);
+        array.RemoveByIndex(--index);
     }
 }
 
@@ -97,7 +110,7 @@ void RemoveByValueMenu(DynamicArray& array)
     array.PrintArray();
     cout << endl << endl;
 
-    int value = GetIntegerInput("Enter value to remove: ");
+    double value = GetDoubleInput("Enter value to remove: ");
 
     if (value != -1) 
     {
@@ -117,7 +130,7 @@ void InsertAtBeginningMenu(DynamicArray& array)
     array.PrintArray();
     cout << endl << endl;
 
-    int value = GetIntegerInput("Enter value to insert at beginning: ");
+    double value = GetDoubleInput("Enter value to insert at beginning: ");
 
     if (value != -1) 
     {
@@ -138,7 +151,7 @@ void InsertAtEndMenu(DynamicArray& array)
     array.PrintArray();
     cout << endl << endl;
 
-    int value = GetIntegerInput("Enter value to insert at end: ");
+    double value = GetDoubleInput("Enter value to insert at end: ");
     if (value != -1) 
     {
         array.InsertValueAtEnd(value);
@@ -158,20 +171,19 @@ void InsertAfterValueMenu(DynamicArray& array)
     array.PrintArray();
     cout << endl << endl;
 
-    int afterValue = GetIntegerInput("Enter value after which to insert: ");
+    double afterValue = GetDoubleInput("Enter value after which to insert: ");
     if (afterValue == -1) 
     {
         return;
     }
 
-    int newValue = GetIntegerInput("Enter new value to insert: ");
+    double newValue = GetDoubleInput("Enter new value to insert: ");
     if (newValue == -1)
     {
         return;
     }
 
     array.InsertAfterValue(afterValue, newValue);
-    cout << "Element inserted successfully." << endl;
 }
 
 /// <summary>
@@ -205,15 +217,11 @@ void LinearSearchMenu(DynamicArray& array)
     array.PrintArray();
     cout << endl << endl;
 
-    int value = GetIntegerInput("Enter value to search: ");
+    double value = GetDoubleInput("Enter value to search: ");
     if (value != -1) 
     {
         int index = array.LinearSearch(value);
-        if (index != -1) 
-        {
-            cout << "Value found at index: " << index << endl;
-        }
-        else 
+        if (index == -1) 
         {
             cout << "Value not found in array." << endl;
         }
@@ -232,36 +240,13 @@ void BinarySearchMenu(DynamicArray& array)
     array.PrintArray();
     cout << endl << endl;
 
-    bool isSorted = true;
-    for (int i = 0; i < array.GetSize() - 1; i++) 
-    {
-        if (array.GetElement(i) > array.GetElement(i + 1)) 
-        {
-            isSorted = false;
-            break;
-        }
-    }
+    SortArrayMenu(array);
 
-    if (!isSorted) 
+
+    double value = GetDoubleInput("Enter value to search: ");
+    if (value != -1)
     {
-        cout << "Error: Array must be sorted for binary search." << endl;
-        cout << "Please use option 6 to sort the array first." << endl;
-    }
-    else 
-    {
-        int value = GetIntegerInput("Enter value to search: ");
-        if (value != -1) 
-        {
-            int index = array.BinarySearch(value);
-            if (index != -1) 
-            {
-                cout << "Value found at index: " << index << endl;
-            }
-            else 
-            {
-                cout << "Value not found in array." << endl;
-            }
-        }
+        array.BinarySearch(value);
     }
 }
 
@@ -270,10 +255,13 @@ int main()
 {
     DynamicArray array;
 
-    array.InsertValueAtEnd(1);
+    array.InsertValueAtEnd(1.5);
     array.InsertValueAtEnd(32);
     array.InsertValueAtEnd(8);
+    array.InsertValueAtEnd(1.5);
     array.InsertValueAtEnd(255);
+    array.InsertValueAtEnd(8);
+
 
     int choice;
 
@@ -336,3 +324,18 @@ int main()
         }
     }
 }
+
+//Вариант 6:
+// int Factorial(int n)
+// {
+//     if (n == 0)
+//        {
+//           return 1;
+//        }
+//     else
+//        {
+//           return n * Factorial(n - 1);
+//        }
+// }
+//T(n) = O(n) => из-за n рекурсивных вызовов который О(1)
+//M(n) = O(n) => из-за глубины стека вызовов n
